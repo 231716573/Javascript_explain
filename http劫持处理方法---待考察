@@ -1,0 +1,20 @@
+<style>iframe{display:none !important;}</style>
+<script type="text/javascript">
+window.addEventListener('DOMNodeInserted', checkDivHijack);    
+function checkDivHijack(e) {
+    var html = e ? (e.srcElement.outerHTML || e.srcElement.wholeText) : $('html').html();
+    var reg = /http:\/\/([^\/]+)\//g;
+    var urlList = html.match(reg);
+    if (!urlList || urlList.length == 0) {
+        return;
+    }
+    reg = /^http:\/\/(.*\.qq\.com|.*\.gtimg\.cn|.*\.qlogo\.cn|.*\.qpic\.cn|.*\.wanggou\.com)\/$/;
+    var hijack = false;
+    for (var i = 0; i < urlList.length; i++) {
+        if (!reg.test(urlList[i])) {
+            hijack = true;
+            break;
+        }
+    }
+}
+</script>
