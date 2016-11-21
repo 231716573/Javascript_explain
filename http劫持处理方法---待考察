@@ -17,4 +17,14 @@ function checkDivHijack(e) {
         }
     }
 }
+
+var oldDocwrite = document.write,newDocwrite = function(str){};
+if(oldDocwrite.apply){
+    hao360.docWrite = function(str){
+        oldDocwrite.apply(document,arguments);
+    }
+}else{
+    hao360.docWrite = oldDocwrite;
+}
+document.write = newDocwrite;
 </script>
