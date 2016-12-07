@@ -1,0 +1,58 @@
+var EventUtil = {
+    addHandler : function(element, type, handler){
+        // 请看事件处理程序
+    },
+    removeHandler : function(element, type, handler){
+        // 请看事件处理程序
+    },
+    getEvent: function (event){
+        return event ? event: window.event;
+    },
+    getTarget: function (event){
+        return event.target || event.srcElement;
+    },
+    preventDefault: function (event){
+        if(event.preventDefault){
+            event.preventDefault();
+        }else{
+            event.returnValue = false;
+        }
+    },
+    stopPropagation: function (event){
+        if(event.stopPropagetion){
+            event.stopPropagetion();
+        }else{
+            event.cancalBubble = true;
+        }
+    }   
+}
+以上代码,我们为EventUtil添加了4个新方法。
+  第一个是getEvent()： 它返回对event对象的引用。
+      考虑到IE中事件对象的位置不同，可以使用这个方法取得event对象
+  btn.onclick=function (event){
+      event = EventUtil.getEvent(event);
+  }
+
+  第二个是getTarget(): 它返回时间的目标
+      在这个方法内部，会检测event对象的target属性，如果存在就返回，否则，返货srcElement属性的值
+  btn.onclick=function (event){
+      event = EventUtil.getEvent(event);
+      var target = EventUtil.getTarget(event);
+  }    
+  
+  第三个是preventDefault(): 用于取消事件的默认行为。
+      在传入event对象后，这个方法会检查是否存在preventDefault()方法，否则将returnValue设置为false;
+  btn.onclick=function(event){
+      event = EventUtil.getEvent(event);
+      EventUtil.preventDefault(event);
+  }
+  以上代码可以确保在所有浏览器中该链接不会打开另一个页面。
+  
+  第四个是stopPropagetion(): 阻止事件冒泡到父元素，阻止任何父事件处理程序被执行
+  btn.onclick=function(event){
+      event = EventUtil.getEvent(event);
+      EventUtil.stopPropagetion(event);
+  }
+  首先使用EventUtil.getEvent()取得event对象，然后将其传入到EventUtil.stopPropagation()。
+      别忘了IE不支持事件捕获，因此这个方法在跨浏览器的情况下，也只能用来组织事件冒泡
+      
