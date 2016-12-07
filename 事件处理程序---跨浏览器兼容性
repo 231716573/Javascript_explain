@@ -1,0 +1,76 @@
+一、事件处理程序
+
+DOM 2级事件 定义了两个方法，用于处理指定和删除事件处理程序：addEventListener() 和 removeEventListener()
+
+ 通过 addEventListener()添加的事件处理程序，只能用removeEventListener() 来移除
+		移除时传入的参数与添加处理程序时使用的参数相同
+
+
+  var btn = document.getElementById("myBtn");
+  btn.addEventListener("click", function(){
+      alert(this.id);
+  },false);
+
+  btn.removeEventListener("click", function(){ //没有用
+      alert(this.id);
+  },false);
+
+ 在例子中，我们使用addEventListener()添加一个时间处理程序，虽然调用removeEventListener()时看似使用了相同的参数
+ 但是实际上，第二个参数传入addEventListener()中的哪一个是完全不同的函数。
+ 而传入removeEventListener()中的事件处理程序必须与传入addEventListener()中的事件处理程序相同
+ 如下：
+
+  var btn = document.getElementById("myBtn");
+  var handler = function (){
+		alert(this.id);
+  }
+  btn.addEventListener("click", handler, false);
+  btn.removeEventListener("click", handler ,false);  //有用 	
+
+*****IE 实现了与DOM中类似的两个方法：attachEvent() 和 detachEvent()   IE8以及更早版本只支持事件冒泡， so，两个方法通常都会被添加到冒泡阶段
+
+  var btn = document.getElementById("myBtn");
+  var handler = function (){
+      alert("click！")
+  }
+  btn.attachEvent("onclick", handler);
+  btn.detachEvent("onclick", handler);
+  
+-----注意：attachEvent() 的第一个参数是"onclick"，而非DOM的addEventListener()方法中的"click";
+
+
+二、跨浏览器的时间处理程序：
+
+var EventUtil = {
+    addHandler: function(element, type, handler){
+        if(element.addEventListener){
+            element.addEventListener(type, handler, false);
+        }else if(element.attachEvent){
+            element.attachEvent("on"+type, handler, false);
+        }else{
+            element["on"+type] = handler;
+        }
+    },
+    removeHandler: function(element, type, handler){
+        if(element.removeEventListener){
+            element.removeEventListener(type, handler, false);
+        }else if(element.detachEvent){
+            element.detachEvent(type, handler, false);
+        }else{
+            element["on"+type] = null;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
