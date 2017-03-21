@@ -1,0 +1,2 @@
+for循环多次  调用多次click函数会绑三个click事件，
+    unbind会把该对象上的事件全部解绑，再来调用一次bind函数就剩最后这个click事件了
