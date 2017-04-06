@@ -1,0 +1,17 @@
+首先，clearInterval(timer)的作用只是将定时器停止，但是timer对象本身还是存在的，
+  比如这样就可以重启：
+  var timer=setInterval(function(){abc()},3000);
+  //鼠标放上去关闭，离开再次启动
+  $("div").mouseover(function(){    
+    clearInterval(timer);//关闭
+  }).mouseout(function(){    
+    timer=setInterval(function(){abc()},3000) ;//重新启动});
+  所以，clearInterval(timer)达到保留对象的作用以便于再次使用，但是如果是timer=null;
+  虽然也同样达到停止的效果，但是本身的timer对象已经被清空了，timer会被系统回收，无法再次启动原来的timer；
+  再次使用需要重新定义一个新对象var timer=setInterval(function(){abc()},3000);
+  个人感觉区别不大，但是原理是不同的。
+
+  作者：可銘
+  链接：https://www.zhihu.com/question/29663085/answer/137864155
+  来源：知乎
+  著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
