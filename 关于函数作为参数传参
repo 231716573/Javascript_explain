@@ -1,0 +1,19 @@
+比如
+function confirm(content, func){
+  alert(content);
+  if(type func == "function"){
+    func()
+  }
+}
+function ceshi(){
+  alert("ceshi");
+}
+
+回调的func不能用func()，如下：
+confirm("123", ceshi());
+
+应该是：
+confirm("123", ceshi);
+
+否则，ceshi()将被自动执行
+
