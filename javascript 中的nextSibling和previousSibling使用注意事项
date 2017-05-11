@@ -1,0 +1,42 @@
+avaScript中的nextSibling和previousSibling和作用类似于jquery的next()和prev()，
+  都是获取下一个/上一个同胞元素，如果下一个同级节点不存在，则此属性返回值是null。
+  
+  但是具体的使用中还是有差异的，如果注意。就会引起错误
+  html结构中的各种空格，换行符都可能会把文本节点当做同胞元素处理。这就会导致错误。
+  
+  firstChild,lastChild,nextSibling,previousSibling都会将空格或者换行当做节点处理，但是有代替属性
+
+  所以为了准确地找到相应的元素，会用
+
+  firstElementChild,
+
+  lastElementChild,
+
+  nextElementSibling,
+
+  previousElementSibling
+
+  兼容的写法，这是JavaScript自带的属性。
+
+  但坏消息是IE6,7,8不兼容这些属性。IE9以上和火狐谷歌支持。
+  
+  
+  一个接口口，测试能在包括ie6在内运行的函数（自己写的，不知有没有其他什么细节错误没注意，反正能运行并且过滤文本节点获取正确的下一个元素节点）
+  
+  function getNextElement(element){
+      var e = element.nextSibling;
+      if(e == null){//测试同胞节点是否存在，否则返回空
+          return null;
+      }
+      if(e.nodeType==3){//如果同胞元素为文本节点
+          var two = getNextElement(e);
+          if(two.nodeType == 1)
+              return two;
+      }else{
+          if(e.nodeType == 1){//确认节点为元素节点才返回
+              return e;
+          }else{
+              return false;
+          }
+      }
+  }
