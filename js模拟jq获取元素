@@ -1,0 +1,56 @@
+var obj = {
+    //获取ID
+    $: function (id){
+        return typeof id === "string" ? document.getElementById(id) : id;
+    },
+    //获取tagname
+    $$: function (tagName, oParent){
+        return (oParent || document).getElementsByClassName(tagName);
+    },
+    //绑定事件到对象
+    bind: function (objects, fnHandler){
+        return function (){
+            return fnHandler.apply(objects, arguments);
+        }
+    },
+    //添加绑定事件
+    addHandler : function (oElement, sEventType, fnHandler){
+        return oElement.addEventListener ? oElement.addEventListener(sEventType, fnHandler, false) : oElement.attachEvent("on" + sEventType, fnHandler)
+    },
+    //删除绑定事件
+    removeHandler: function (oElement, sEventType, fnHandler){
+        return oElement.removeEventListener ? oElement.removeEventListener(sEventType, fnHandler, false) : oElement.detachEvent("on" + sEventType, fnhandler)
+    },
+    //获取class
+    getClass: function (sClass, oParent){
+        var aClass = [];
+        var reClass = new RegExp("(^| )" + sClass + "( |$)");
+        var aElem = (oParent || document).getElementsByTagName("*");
+        for(var i =0;i<aElem.length; i++) reClass.test(aElem[i].className) && aClass.push(aElem[i]);
+        return aClass;
+    },
+    //class是否存在
+    hasClass: function (obj, sClass){
+        var reg = new RegExp("(^|\\s)" + sCLass + "(\\s|$)");
+        return reg.test(obj.className);
+    },
+    //添加class
+    addClass: function (obj, sClass){
+        hasClass(obj, sClass) || (obj.className += " " + sClass);
+    },
+    //删除class
+    removeClass: function (obj, sClass){
+        if(hasClass(obj, sClass)){
+            var reg = new RegExp("(^|\\s)"+ sClass +"(\\s|$)");
+            obj.className = obj.className.replace(reg, "");
+        }
+    },
+    //上一个元素
+    prevElement: function(obj){
+        return obj.previousSibling || obj.previousElementSibling || null;
+    },
+    //下一个元素
+    nextElement: function(obj){
+        return obj.nextSibling || obj.nextElementSibling || null;
+    }
+}
